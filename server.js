@@ -10,7 +10,6 @@ var dao = require('./models/databaseObject').setDatabase(db);
 var express = require('express')
   , routes = require('./routes')
   , events = require('./routes/events')
-  , people = require('./routes/people')
   , errors = require('./errors');
  
 
