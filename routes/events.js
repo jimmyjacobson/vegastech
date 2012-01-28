@@ -3,13 +3,6 @@ var dao = require('../models/databaseObject'),
     errors = require('../errors'),
     validation = require('../lib/validation');
 
-
-exports.index = function(req, res){
-  dao.getAndExpandCollection(keys.eventsKey, 'set', function(err, collection) {
-    res.json(collection, 200);
-  })
-};
-
 exports.create = function(req, res, next) {
 
   var event = {
@@ -31,24 +24,11 @@ exports.create = function(req, res, next) {
       }
       else {
         dao.setByKey(keys.eventsKey, key, 'set', function(err) {
-          res.json(key);
+          res.json(key, 201);
         });
       }
     });
   });
-}
-
-exports.getByKey = function(req, res, next) {
-  var key = req.params.eventKey;
-  dao.getByKey(key, 'hash', function(err, event) {
-    if (err) { return next(err);}
-    res.json(event, 200);
-  });
-
-}
-
-exports.notFound = function(req, res) {
-  res.json ('Event not found', 404);
 }
 
 function eventValidation(event, callback) {

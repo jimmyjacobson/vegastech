@@ -56,7 +56,7 @@ describe('Tests on sets', function(){
   
   describe('get expanded set', function() {
     it('should return a set', function(done) {
-      dao.getAndExpandCollection('ids', 'set', function(err, objects) {
+      dao.getByKey('ids', 'set', function(err, objects) {
         objects.should.exist;
         done();
       });

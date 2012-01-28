@@ -10,6 +10,7 @@ var dao = require('./models/databaseObject').setDatabase(db);
 var express = require('express')
   , routes = require('./routes')
   , events = require('./routes/events')
+  , people = require('./routes/people')
   , errors = require('./errors');
  
 
@@ -32,20 +33,16 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-// Routes
+app.get('/favicon.ico', function(req, res) { res.json('seriously?', 403); })
 
-//Error Handling
-
+app.post('/event', events.create);
+app.post('/person', people.create);
 
 //default routes
 app.all('*', routes.headers);
 app.get('/', routes.index);
+app.get(/^(.*)$/, routes.getByKey);
 
-//EVENT API
-app.get('/events', events.index);
-app.get('/event/:eventKey', events.getByKey);
-app.post('/event', events.create);
-app.get('/event/*', events.notFound);
 
 process.on('uncaughtException', function(err) {
 	console.log('uncaughtException:' + err);

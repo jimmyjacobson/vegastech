@@ -56,14 +56,15 @@ var expandCollection = exports.expandCollection = function expandCollection (ids
   var i = ids.length;
   
   ids.forEach(function(id, index) {
-    getByKey(id, 'hash', function(err, object) {
+    getByKey(id, function(err, object) {
       if (err) {
-        errors.unshift(err)
+        objects.unshift(id);
       }
       else {
         objects.unshift(object);
       }
       if (!--i) {
+        if (errors.length == 0) {errors = null;}
         return callback(errors, objects);
       }
     });
@@ -124,7 +125,9 @@ function getByTypeSet(key, callback) {
       var error = new errors.NotFound([key + ' not found']);
       return callback(error);
     }
-    return callback(null, set);
+    expandCollection(set, function(err, collection) {
+      return callback(null, collection);
+    });
   });
 }
 
